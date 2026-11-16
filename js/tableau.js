@@ -150,7 +150,7 @@
   function legende(b, n) {
     if (b.legende === "aucune" || (b.legende === undefined && n < 2)) { return { show: false }; }
     var bas = b.legende === "bas" || b.legende === undefined;
-    return { show: true, type: "scroll", top: bas ? undefined : 0, bottom: bas ? 0 : undefined, textStyle: { fontFamily: POLICE, color: GRIS }, itemGap: 16 };
+    return { show: true, type: "plain", top: bas ? undefined : 0, bottom: bas ? 0 : undefined, textStyle: { fontFamily: POLICE, color: GRIS }, itemGap: 16 };
   }
   function fmt(b) {
     var f = Object.assign({}, b.format || {});
@@ -268,7 +268,7 @@
     var o = base(b);
     o.tooltip.trigger = "item";
     o.tooltip.formatter = function (p) { return esc(g.categories[p.value[0]].libelle) + " · " + esc(g.series[p.value[1]].nom) + "<br><strong>" + esc(C.format(p.value[2], f)) + "</strong>"; };
-    o.grid.bottom = 56;
+    o.grid.bottom = 64;
     o.xAxis = { type: "category", data: g.categories.map(function (c) { return c.libelle; }), axisLabel: axeLibelle(g.categories.length > 8 ? 30 : 0), splitArea: { show: true } };
     o.yAxis = { type: "category", data: g.series.map(function (s) { return s.nom; }), axisLabel: axeLibelle(), splitArea: { show: true } };
     var pal = PALETTES[b.palette] || PALETTES.bleus;
@@ -298,9 +298,12 @@
     o.tooltip.formatter = function (p) {
       return (p.name ? "<strong>" + esc(p.name) + "</strong><br>" : "") + esc(libCol(t, x)) + " : " + esc(C.format(p.value[0])) + "<br>" + esc(libCol(t, y)) + " : " + esc(C.format(p.value[1], f)) + (taille ? "<br>" + esc(libCol(t, taille)) + " : " + esc(C.format(p.value[2])) : "");
     };
-    o.xAxis = { type: "value", name: libCol(t, x), nameLocation: "middle", nameGap: 28, scale: true, axisLabel: { color: GRIS_CLAIR }, splitLine: { lineStyle: { color: TRAIT } } };
-    o.yAxis = { type: "value", name: libCol(t, y), scale: true, axisLabel: { color: GRIS_CLAIR }, splitLine: { lineStyle: { color: TRAIT } } };
-    o.grid.bottom += 24;
+    var fy = Object.assign({}, f, { compact: true });
+    o.xAxis = { type: "value", name: libCol(t, x), nameLocation: "middle", nameGap: 30, nameTextStyle: { color: GRIS_CLAIR, fontFamily: POLICE }, scale: true, axisLabel: { color: GRIS_CLAIR, formatter: function (v) { return C.format(v, { compact: true }); } }, splitLine: { lineStyle: { color: TRAIT } } };
+    o.yAxis = { type: "value", name: libCol(t, y), nameTextStyle: { color: GRIS_CLAIR, fontFamily: POLICE, align: "left" }, scale: true, axisLabel: { color: GRIS_CLAIR, formatter: function (v) { return C.format(v, fy); } }, splitLine: { lineStyle: { color: TRAIT } } };
+    if (o.legend.show) { o.legend.top = 0; o.legend.bottom = undefined; }
+    o.grid.top = o.legend.show ? 56 : 32;
+    o.grid.bottom = 36;
     o.series = ordre.map(function (k, i) {
       return { name: k, type: "scatter", data: groupes[k], itemStyle: { color: cols[i], opacity: 0.8 }, symbolSize: taille ? function (v) { return 6 + 34 * Math.sqrt((v[2] || 0) / (maxT || 1)); } : 10 };
     });
@@ -314,9 +317,9 @@
     o.series = [{
       type: "gauge", min: 0, max: max, progress: { show: true, width: 18, itemStyle: { color: (PALETTES[b.palette] || PALETTES.dsfr)[0] } },
       axisLine: { lineStyle: { width: 18, color: [[1, "#EEEEEE"]] } }, axisTick: { show: false }, splitLine: { show: false },
-      axisLabel: { show: true, distance: 24, color: GRIS_CLAIR, fontFamily: POLICE, formatter: function (v) { return v === 0 || v === max ? C.format(v, Object.assign({}, f, { compact: true })) : ""; } },
+      axisLabel: { show: false },
       pointer: { show: false }, anchor: { show: false }, title: { show: false },
-      detail: { valueAnimation: true, offsetCenter: [0, "10%"], fontSize: 30, fontWeight: 700, fontFamily: POLICE, color: GRIS, formatter: function (v) { return C.format(v, f); } },
+      detail: { valueAnimation: true, offsetCenter: [0, "5%"], fontSize: 30, fontWeight: 700, fontFamily: POLICE, color: GRIS, formatter: function (v) { return C.format(v, f); } },
       data: [{ value: valeur === null ? 0 : valeur, name: b.titre || "" }]
     }];
     return o;
@@ -356,10 +359,11 @@
     };
   }
 
-  function tableHtml(entetes, lignes, legende, totaux) {
+  function tableHtml(entetes, lignes, legende, totaux, texte) {
+    var num = texte ? "" : " class=\"tb-num\"";
     return "<div class=\"fr-table fr-table--sm fr-table--no-caption tb-table\"><div class=\"fr-table__wrapper\"><div class=\"fr-table__container\"><div class=\"fr-table__content\"><table>" +
-      "<caption>" + esc(legende || "Données") + "</caption><thead><tr>" + entetes.map(function (h) { return "<th scope=\"col\">" + esc(h) + "</th>"; }).join("") + "</tr></thead><tbody>" +
-      lignes.map(function (l) { return "<tr>" + l.map(function (v, i) { return i === 0 ? "<th scope=\"row\">" + esc(v) + "</th>" : "<td class=\"tb-num\">" + esc(v) + "</td>"; }).join("") + "</tr>"; }).join("") +
+      "<caption>" + esc(legende || "Données") + "</caption><thead><tr>" + entetes.map(function (h, i) { return "<th scope=\"col\"" + (i ? num : "") + ">" + esc(h) + "</th>"; }).join("") + "</tr></thead><tbody>" +
+      lignes.map(function (l) { return "<tr>" + l.map(function (v, i) { return i === 0 ? "<th scope=\"row\">" + esc(v) + "</th>" : "<td" + num + ">" + esc(v) + "</td>"; }).join("") + "</tr>"; }).join("") +
       "</tbody>" + (totaux ? "<tfoot><tr>" + totaux.map(function (v, i) { return i === 0 ? "<th scope=\"row\">" + esc(v) + "</th>" : "<td class=\"tb-num\"><strong>" + esc(v) + "</strong></td>"; }).join("") + "</tr></tfoot>" : "") +
       "</table></div></div></div></div>";
   }
@@ -428,7 +432,7 @@
           return v === null || v === undefined ? "" : String(v);
         });
       });
-      corps.innerHTML = tableHtml(cols.map(function (c) { return libCol(t, c); }), rows, b.titre) + (l.length > max ? "<p class=\"fr-text--xs tb-note\">" + esc(max) + " lignes affichées sur " + esc(l.length) + ".</p>" : "");
+      corps.innerHTML = tableHtml(cols.map(function (c) { return libCol(t, c); }), rows, b.titre, null, true) + (l.length > max ? "<p class=\"fr-text--xs tb-note\">" + esc(max) + " lignes affichées sur " + esc(l.length) + ".</p>" : "");
       return { entetes: cols.map(function (c) { return libCol(t, c); }), lignes: rows };
     }
     var x = C.croiser(lignes, { lignes: Object.assign({ moisDebut: ctx.moisDebut }, b.axe || {}), colonnes: b.series && b.series.colonne ? Object.assign({ moisDebut: ctx.moisDebut }, b.series) : null, mesure: (b.mesures || [])[0] }, t.colonnes, ctx);
@@ -485,7 +489,8 @@
         ch.setOption(g.option);
         if (opts.surClic && b.axe && b.axe.colonne && ["nuage", "jauge", "carte-chaleur"].indexOf(b.forme) < 0) {
           ch.on("click", function (p) {
-            var cat = g.groupes && g.groupes.categories[p.dataIndex];
+            var cats = (g.groupes && g.groupes.categories) || [];
+            var cat = cats.find(function (c) { return c.libelle === p.name; }) || cats[p.dataIndex];
             if (cat && cat.cle !== "__autres") { opts.surClic({ axe: Object.assign({ moisDebut: ctx.moisDebut }, b.axe), cle: cat.cle, libelle: cat.libelle, colonne: b.axe.colonne, nomColonne: libCol(t, b.axe.colonne) }); }
           });
           zone.classList.add("tb-cliquable");
@@ -500,7 +505,7 @@
       det.innerHTML = "<summary class=\"fr-text--sm\">Voir les données</summary>" + tableHtml(res.entetes, res.lignes, b.titre);
       carte.appendChild(det);
     }
-    if (res && opts.exports !== false && b.type !== "texte") {
+    if (res && opts.exports !== false && b.type !== "texte" && b.type !== "indicateur") {
       var outils = el("div", "tb-outils");
       if (res.graphique && b.type === "graphique") {
         var bi = el("button", "fr-btn fr-btn--tertiary-no-outline fr-btn--sm fr-icon-image-line fr-btn--icon-left", "Image");
