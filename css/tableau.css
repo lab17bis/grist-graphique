@@ -37,7 +37,8 @@
 .tb-donnees .fr-table { margin-top: 0.5rem; margin-bottom: 0.5rem; }
 
 .tb-kpi { position: relative; }
-.tb-kpi__valeur { font-size: 2.5rem; line-height: 3rem; font-weight: 700; margin: 0.25rem 0 0; color: var(--text-title-blue-france); font-variant-numeric: tabular-nums; }
+.tb-bloc--indicateur { container-type: inline-size; }
+.tb-kpi__valeur { font-size: clamp(1.5rem, 13cqi, 2.5rem); line-height: 1.2; white-space: nowrap; font-weight: 700; margin: 0.25rem 0 0; color: var(--text-title-blue-france); font-variant-numeric: tabular-nums; }
 .tb-kpi__libelle { margin: 0 0 0.5rem; color: var(--text-mention-grey); }
 .tb-kpi__comparaison { color: var(--text-mention-grey); }
 .tb-tendance { height: 48px; margin-top: 0.75rem; }
