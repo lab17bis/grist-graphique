@@ -13,12 +13,16 @@
 
   var C = global.Calcul;
 
-  // Couleurs illustratives du DSFR (contrastes vérifiés sur fond blanc pour les éléments graphiques).
+  // Palettes construites uniquement avec des tokens du DSFR (valeurs lues dans vendor/dsfr/dsfr.min.css).
+  // Règle : chaque couleur d'un graphique atteint au moins 3:1 sur fond blanc (RGAA 3.3, éléments graphiques).
+  // Les teintes « main » trop claires du DSFR (moutarde, tournesol, macaron, terre battue, café crème,
+  // opéra, caramel, tilleul) sont exclues, leurs variantes « sun » (foncées) sont utilisées à la place.
+  // Le contrôle est automatisé : node tests/contrastes.js (échoue si une couleur passe sous 3:1).
   var PALETTES = {
-    dsfr: ["#000091", "#009081", "#E4794A", "#A558A0", "#C3992A", "#417DC4", "#CE614A", "#68A532", "#C08C65", "#465F9D", "#E18B76", "#009099"],
-    bleus: ["#000091", "#313178", "#465F9D", "#417DC4", "#6A6AF4", "#8585F6", "#A1A1F8", "#BCBCFA", "#CACAFB", "#E3E3FD"],
-    verts: ["#00A95F", "#009081", "#68A532", "#009099", "#447049", "#37635F", "#3A7A5A", "#B7A73F", "#7D8B3A", "#5E7B5E"],
-    chauds: ["#CE614A", "#E4794A", "#C3992A", "#C8AA39", "#E18B76", "#C08C65", "#BD987A", "#D1B781", "#A94645", "#8D533E"],
+    dsfr: ["#000091", "#CE614A", "#009081", "#A558A0", "#845D48", "#417DC4", "#66673D", "#A94645", "#006A6F", "#6A6156"],
+    bleus: ["#000091", "#2F4077", "#3558A2", "#465F9D", "#417DC4", "#6A6AF4"],
+    verts: ["#297254", "#447049", "#37635F", "#006A6F", "#00A95F", "#009081", "#009099", "#66673D"],
+    chauds: ["#A94645", "#CE614A", "#E1000F", "#8D533E", "#845D48", "#716043", "#695240", "#755348"],
     contraste: ["#000091", "#E1000F", "#18753C", "#B34000", "#6E445A", "#0063CB", "#695240", "#3A3A3A", "#9C0000", "#007C7C"]
   };
   var PALETTES_LIBELLES = [["dsfr", "Couleurs du DSFR (variées)"], ["bleus", "Camaïeu de bleus"], ["verts", "Camaïeu de verts"], ["chauds", "Tons chauds"], ["contraste", "Contraste renforcé"]];
@@ -135,13 +139,23 @@
     });
   }
 
+  // Motifs : « Toujours » (true), « Jamais » (false), sinon automatiques dès que plus de 4 couleurs se distinguent.
+  function motifsAuto(b, o) {
+    if (b.motifs === false || b.motifs === "false" || b.motifs === true || b.motifs === "true") { return o; }
+    var s = o.series || [], n = 0;
+    if (s.length > 1) { n = s.length; }
+    else if (s.length === 1 && Array.isArray(s[0].data) && (s[0].type === "pie" || (s[0].data[0] && s[0].data[0].itemStyle))) { n = s[0].data.length; }
+    if (n > 4) { o.aria = o.aria || { enabled: true }; o.aria.decal = { show: true }; }
+    return o;
+  }
+
   /* ---------- Options ECharts ---------- */
 
   function base(b) {
     return {
       animationDuration: 400,
       textStyle: { fontFamily: POLICE, color: GRIS },
-      aria: { enabled: true, decal: { show: !!b.motifs } },
+      aria: { enabled: true, decal: { show: b.motifs === true || b.motifs === "true" } },
       grid: { left: 12, right: 24, top: b.legende === "haut" ? 48 : 16, bottom: b.legende === "bas" ? 48 : 12, containLabel: true },
       tooltip: { confine: true, textStyle: { fontFamily: POLICE } },
       toolbox: { show: false }
@@ -334,7 +348,7 @@
     var forme = b.forme || "barres";
     if (forme === "nuage") {
       var n = optionNuage(b, lignes, t);
-      return { option: n.option, entetes: [libCol(t, (b.nuage || {}).couleur) || "Groupe", libCol(t, (b.nuage || {}).libelle) || "Libellé", libCol(t, (b.nuage || {}).x), libCol(t, (b.nuage || {}).y), libCol(t, (b.nuage || {}).taille) || "Taille"], lignes: n.donnees };
+      return { option: motifsAuto(b, n.option), entetes: [libCol(t, (b.nuage || {}).couleur) || "Groupe", libCol(t, (b.nuage || {}).libelle) || "Libellé", libCol(t, (b.nuage || {}).x), libCol(t, (b.nuage || {}).y), libCol(t, (b.nuage || {}).taille) || "Taille"], lignes: n.donnees };
     }
     if (forme === "jauge") {
       var v = C.agreger(lignes, (b.mesures || [])[0], t.colonnes, ctx);
@@ -349,7 +363,7 @@
     };
     if (forme === "carte-chaleur" && !(opts.series)) { opts.series = null; }
     var g = C.grouper(lignes, opts, t.colonnes, ctx);
-    var option = parts ? optionParts(b, g, t) : forme === "radar" ? optionRadar(b, g, t) : forme === "carte-chaleur" && g.series.length ? optionChaleur(b, g) : optionCategories(b, g, t);
+    var option = motifsAuto(b, parts ? optionParts(b, g, t) : forme === "radar" ? optionRadar(b, g, t) : forme === "carte-chaleur" && g.series.length ? optionChaleur(b, g) : optionCategories(b, g, t));
     var f = fmt(b);
     return {
       option: option, groupes: g,

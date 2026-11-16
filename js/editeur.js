@@ -287,7 +287,7 @@
     h += choix(ch.concat(["palette"]), "Couleurs", T.PALETTES_LIBELLES, { defaut: "dsfr" });
     h += caseInverse(ch.concat(["couleursGrist"]), "Reprendre les couleurs des choix définies dans Grist");
     if (["barres", "barres-h"].indexOf(forme) >= 0) { h += caseC(ch.concat(["couleurParCategorie"]), "Une couleur par barre"); }
-    h += caseC(ch.concat(["motifs"]), "Ajouter des motifs aux couleurs", "Aide à distinguer les valeurs sans la couleur (accessibilité, impression en noir et blanc).");
+    h += choix(ch.concat(["motifs"]), "Motifs sur les couleurs", [["", "Automatique (au-delà de 4 couleurs)"], ["true", "Toujours"], ["false", "Jamais"]], { aide: "Aident à distinguer les valeurs sans la couleur (accessibilité, impression en noir et blanc)." });
     h += texte(ch.concat(["hauteur"]), "Hauteur (pixels)", { nombre: true, placeholder: "320" });
     h += texte(ch.concat(["source"]), "Source affichée sous le graphique", { placeholder: "Par exemple : base des demandes, extraction automatique" });
     return h;

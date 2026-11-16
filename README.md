@@ -40,7 +40,8 @@ Démonstration avec des données fictives : <https://lab17bis.github.io/grist-gr
   - en-tête et pied de page configurables (bloc-marque, logo, titre, boutons, liens), communs aux autres outils de la famille ;
   - couleurs illustratives du DSFR, police Marianne ;
   - reprise des couleurs des choix définies dans Grist.
-- **Accessibilité** : chaque graphique a sa table de données (« Voir les données »), une description pour les lecteurs d'écran, et des motifs en option pour distinguer les couleurs.
+- **Couleurs du DSFR, contrastes vérifiés** : les palettes n'utilisent que des tokens du DSFR et chaque couleur atteint au moins 3:1 sur fond blanc (RGAA, éléments graphiques). Les teintes claires du DSFR (moutarde, tournesol, macaron, terre battue…) sont remplacées par leurs variantes foncées. Contrôle automatique : `node tests/contrastes.js`. Les couleurs de choix définies dans Grist, si on les reprend, ne sont pas contrôlées.
+- **Accessibilité** : chaque graphique a sa table de données (« Voir les données »), une description pour les lecteurs d'écran, et des motifs pour distinguer les couleurs sans se fier à la teinte (automatiques au-delà de 4 couleurs, réglables : automatique, toujours, jamais).
 - **Exports** : image PNG de chaque graphique, données CSV de chaque bloc, impression du tableau de bord.
 
 ## Le brancher en 5 minutes
