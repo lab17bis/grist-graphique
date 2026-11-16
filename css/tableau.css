@@ -1,0 +1,55 @@
+/* Tableaux de bord : blocs, indicateurs, graphiques (complète le DSFR). */
+
+.tb-tete { margin-bottom: 1.5rem; }
+.tb-titre { margin-bottom: 0.5rem; }
+.tb-intro p:last-child { margin-bottom: 0.5rem; }
+.tb-note { color: var(--text-mention-grey); }
+
+.tb-filtres { background: var(--background-alt-blue-france); padding: 1rem 1rem 0.25rem; margin-bottom: 1rem; }
+.tb-filtres__ligne { display: flex; flex-wrap: wrap; gap: 0 1.5rem; }
+.tb-filtre { flex: 1 1 12rem; max-width: 20rem; margin-bottom: 0.75rem; }
+.tb-actifs:empty { display: none; }
+.tb-actifs { margin-bottom: 0.5rem; }
+.tb-actifs__titre { margin-bottom: 0.25rem; }
+
+.tb-grille > [class*="fr-col"] { display: flex; }
+.tb-bloc {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
+  border-top: 4px solid var(--border-plain-blue-france);
+  padding: 1rem 1.25rem 0.75rem;
+}
+.tb-bloc--texte { border-top-color: var(--border-default-grey); }
+.tb-bloc__tete { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0 0.5rem; }
+.tb-bloc__titre { font-size: 1.125rem; line-height: 1.5rem; margin: 0 0 0.25rem; flex: 1 1 12rem; }
+.tb-bloc__sous-titre { flex-basis: 100%; order: 3; margin: 0 0 0.5rem; font-size: 0.875rem; color: var(--text-mention-grey); }
+.tb-outils { display: flex; gap: 0; margin-left: auto; }
+.tb-outils .fr-btn { padding-left: 0.5rem; padding-right: 0.5rem; }
+.tb-bloc__corps { flex: 1 1 auto; min-height: 0; }
+.tb-graphique { width: 100%; }
+.tb-cliquable { cursor: pointer; }
+.tb-source { margin: 0.5rem 0 0; color: var(--text-mention-grey); }
+.tb-donnees summary { cursor: pointer; color: var(--text-action-high-blue-france); margin-top: 0.5rem; }
+.tb-donnees .fr-table { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+
+.tb-kpi { position: relative; }
+.tb-kpi__valeur { font-size: 2.5rem; line-height: 3rem; font-weight: 700; margin: 0.25rem 0 0; color: var(--text-title-blue-france); font-variant-numeric: tabular-nums; }
+.tb-kpi__libelle { margin: 0 0 0.5rem; color: var(--text-mention-grey); }
+.tb-kpi__comparaison { color: var(--text-mention-grey); }
+.tb-tendance { height: 48px; margin-top: 0.75rem; }
+.tb-progression { height: 0.5rem; background: var(--background-contrast-grey); margin: 0.75rem 0 0.25rem; }
+.tb-progression span { display: block; height: 100%; background: var(--background-action-high-blue-france); }
+
+.tb-table table { width: 100%; }
+.tb-table .fr-table__content table { display: table; }
+.tb-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tb-texte p:last-child { margin-bottom: 0; }
+
+@media print {
+  .tb-filtres, .tb-outils, .tb-donnees summary, .fr-skiplinks, .tb-actifs { display: none !important; }
+  .tb-bloc { break-inside: avoid; }
+}
