@@ -109,6 +109,8 @@ Visiteur ──> page DSFR (ce dépôt, GitHub Pages)
 - [grist-catalogue](https://github.com/lab17bis/grist-catalogue) : widget de mise en page pour Grist, catalogue public de fiches au DSFR.
 - [grist-questionnaire](https://github.com/lab17bis/grist-questionnaire) : widget de mise en page pour Grist, questionnaires au DSFR avec logique conditionnelle.
 - [grist-projet](https://github.com/lab17bis/grist-projet) : widget-outil pour Grist, espace d'équipe pour gérer des projets au DSFR.
+- [grist-reunion](https://github.com/lab17bis/grist-reunion) : widget-outil pour Grist, ordre du jour, notes, décisions, actions et compte rendu de réunion.
+- [grist-management](https://github.com/lab17bis/grist-management) : widget-outil pour Grist, espace de management visuel qui assemble les autres outils.
 
 Ils partagent les mêmes réglages d'en-tête et de pied de page.
 
