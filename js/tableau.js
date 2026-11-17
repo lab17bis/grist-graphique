@@ -46,6 +46,16 @@
   }
   function el(tag, cls, html) { var n = document.createElement(tag); if (cls) { n.className = cls; } if (html !== undefined) { n.innerHTML = html; } return n; }
   function couleurSure(c) { return /^#[0-9a-f]{3,8}$/i.test(String(c || "")) ? c : ""; }
+  // Contraste d'une couleur contre le blanc (WCAG). Une teinte libre (sélecteur, couleur d'un choix Grist)
+  // n'est retenue que si elle atteint 3:1, seuil des éléments graphiques ; sinon on retombe sur la palette DSFR.
+  function contrasteBlanc(c) {
+    var h = String(c || "").replace("#", "");
+    if (h.length === 3) { h = h.replace(/(.)/g, "$1$1"); }
+    if (!/^[0-9a-f]{6}([0-9a-f]{2})?$/i.test(h)) { return 0; }
+    var l = [0, 2, 4].map(function (i) { var v = parseInt(h.substr(i, 2), 16) / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    return 1.05 / (0.2126 * l[0] + 0.7152 * l[1] + 0.0722 * l[2] + 0.05);
+  }
+  function couleurLisible(c) { return couleurSure(c) && contrasteBlanc(c) >= 3 ? c : ""; }
   var nId = 0;
   function uid(p) { return (p || "tb") + "-" + (++nId); }
 
@@ -132,8 +142,8 @@
     var grist = b.couleursGrist !== false && t && t.colonnes[colonne] ? (t.colonnes[colonne].couleurs || {}) : {};
     var i = 0;
     return libelles.map(function (l) {
-      if (couleurSure(perso[l])) { return perso[l]; }
-      if (couleurSure(grist[l]) && !/^#(f+|e[0-9a-f]e[0-9a-f]e[0-9a-f])$/i.test(grist[l])) { return grist[l]; }
+      if (couleurLisible(perso[l])) { return perso[l]; }
+      if (couleurLisible(grist[l])) { return grist[l]; }
       if (l === C.VIDE || l === "Autres") { return "#929292"; }
       return pal[(i++) % pal.length];
     });
@@ -491,7 +501,7 @@
     carte.innerHTML = "";
     carte.className = "tb-bloc tb-bloc--" + (b.type || "graphique") + (b.accent ? " tb-bloc--accent" : "");
     carte.classList.remove("tb-bloc--statut-vert", "tb-bloc--statut-orange", "tb-bloc--statut-rouge");
-    if (couleurSure(b.accent)) { carte.style.borderTopColor = b.accent; } else { carte.style.borderTopColor = ""; }
+    if (couleurLisible(b.accent)) { carte.style.borderTopColor = b.accent; } else { carte.style.borderTopColor = ""; }
     var niveau = opts.titreNiveau || 2;
     var tete = el("div", "tb-bloc__tete");
     if (b.titre) { tete.appendChild(el("h" + niveau, "tb-bloc__titre", esc(b.titre))); }
@@ -731,7 +741,7 @@
   }
 
   global.Tableau = {
-    statutSeuils: statutSeuils, PALETTES: PALETTES, PALETTES_LIBELLES: PALETTES_LIBELLES, FORMES: FORMES,
+    statutSeuils: statutSeuils, contrasteBlanc: contrasteBlanc, PALETTES: PALETTES, PALETTES_LIBELLES: PALETTES_LIBELLES, FORMES: FORMES,
     completerTableau: completerTableau, monter: monter, rendreBloc: rendreBloc,
     tablesUtilisees: tablesUtilisees, texteRiche: texteRiche, calculerGraphique: calculerGraphique
   };

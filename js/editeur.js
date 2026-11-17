@@ -123,6 +123,7 @@
     var i = id(), v = lire(ch);
     return "<div class=\"fr-input-group\"><label class=\"fr-label\" for=\"" + i + "\">" + esc(lib) + "</label>" +
       "<div class=\"pe-couleur\"><input type=\"color\" id=\"" + i + "\" data-c=\"" + P(ch) + "\" data-r=\"1\" value=\"" + esc(v || "#000091") + "\">" +
+      (v && T.contrasteBlanc && T.contrasteBlanc(v) < 3 ? "<span class=\"fr-badge fr-badge--sm fr-badge--warning\">Trop clair : remplacé par la palette DSFR</span>" : "") +
       (v ? "<span class=\"fr-text--sm\">" + esc(v) + "</span><button type=\"button\" class=\"fr-btn fr-btn--sm fr-btn--tertiary-no-outline\" data-effacer=\"" + P(ch) + "\">Par défaut</button>" : "<span class=\"fr-text--sm\">Par défaut</span>") +
       "</div></div>";
   }

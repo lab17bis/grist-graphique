@@ -19,4 +19,15 @@ bloc.split("\n").forEach(function (l) {
 var texte = { GRIS: (src.match(/GRIS = "(#[0-9a-fA-F]{6})"/) || [])[1], GRIS_CLAIR: (src.match(/GRIS_CLAIR = "(#[0-9a-fA-F]{6})"/) || [])[1] };
 Object.keys(texte).forEach(function (k) { var r = ratio(texte[k]); if (r < 4.5) { erreurs++; console.log("ÉCHEC  texte " + k + " " + texte[k] + " " + r.toFixed(2) + ":1 (< 4,5:1)"); } });
 console.log(erreurs ? erreurs + " échec(s)" : "Contrastes OK : palettes ≥ 3:1, textes ≥ 4,5:1");
+
+// Les couleurs libres de la démonstration doivent aussi passer 3:1.
+(function () {
+  var fs = require("fs"), s = fs.readFileSync(__dirname + "/../exemples/demo.json", "utf8"), mauvais = [];
+  (s.match(/"#[0-9A-Fa-f]{6}"/g) || []).forEach(function (m) {
+    var h = m.slice(2, 8), l = [0, 2, 4].map(function (i) { var v = parseInt(h.substr(i, 2), 16) / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    if (1.05 / (0.2126 * l[0] + 0.7152 * l[1] + 0.0722 * l[2] + 0.05) < 3 && ["#FFFFFF"].indexOf("#" + h.toUpperCase()) < 0) { mauvais.push("#" + h); }
+  });
+  if (mauvais.length) { console.error("Couleurs de démo sous 3:1 : " + mauvais.join(", ")); process.exit(1); }
+  console.log("Démo : couleurs libres ≥ 3:1");
+})();
 process.exit(erreurs ? 1 : 0);

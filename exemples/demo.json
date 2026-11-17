@@ -85,7 +85,7 @@
        }
       ],
       "libelleValeur": "à traiter ou en cours",
-      "accent": "#C3992A"
+      "accent": "#B34000"
      },
      {
       "type": "indicateur",
@@ -436,7 +436,7 @@
      "couleurs": {
       "Nouvelle": "#417DC4",
       "En cours": "#000091",
-      "En attente": "#C3992A",
+      "En attente": "#B34000",
       "Clôturée": "#18753C",
       "Abandonnée": "#929292"
      }
