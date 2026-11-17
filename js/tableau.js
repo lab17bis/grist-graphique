@@ -382,6 +382,21 @@
       "</table></div></div></div></div>";
   }
 
+  // Seuils d'un indicateur : { sens: "hausse"|"baisse", alerte, critique, libelles }.
+  // Sens « hausse » : au-dessus du seuil d'alerte = conforme, sous le seuil critique = critique.
+  function statutSeuils(b, v) {
+    var sl = b.seuils || {};
+    var a = sl.alerte === "" || sl.alerte === undefined || sl.alerte === null ? null : Number(sl.alerte);
+    var c = sl.critique === "" || sl.critique === undefined || sl.critique === null ? null : Number(sl.critique);
+    if ((a === null && c === null) || v === null || v === undefined || isNaN(v)) { return null; }
+    var baisse = sl.sens === "baisse";
+    function franchi(seuil) { return seuil !== null && (baisse ? v > seuil : v < seuil); }
+    var lib = sl.libelles || {};
+    if (franchi(c)) { return { code: "rouge", badge: "error", texte: lib.rouge || "Critique" }; }
+    if (franchi(a)) { return { code: "orange", badge: "warning", texte: lib.orange || "À surveiller" }; }
+    return { code: "vert", badge: "success", texte: lib.vert || "Conforme" };
+  }
+
   function indicateur(corps, b, lignes, t, ctx, toutes) {
     var f = fmt(b);
     var m = (b.mesures || [])[0] || { fonction: "nombre" };
@@ -410,6 +425,12 @@
       var p = Math.max(0, Math.min(100, 100 * (v || 0) / Number(b.objectif)));
       h += "<div class=\"tb-progression\" role=\"img\" aria-label=\"" + esc(C.format(p, { decimales: 0, unite: "%" })) + " de l'objectif\"><span style=\"width:" + p.toFixed(1) + "%\"></span></div>" +
         "<p class=\"fr-text--xs tb-kpi__comparaison\">" + esc(C.format(p, { decimales: 0, unite: "%" })) + " de l'objectif (" + esc(C.format(Number(b.objectif), f)) + ")</p>";
+    }
+    // Seuils : statut vert / orange / rouge, affiché en texte et pas seulement en couleur.
+    var st = statutSeuils(b, v);
+    if (st) {
+      h = "<p class=\"fr-badge fr-badge--sm fr-badge--" + st.badge + " tb-kpi__statut\">" + esc(st.texte) + "</p>" + h;
+      corps.parentNode.classList.add("tb-bloc--statut-" + st.code);
     }
     corps.innerHTML = "<div class=\"tb-kpi\">" + h + "</div>";
     // Petite courbe d'évolution.
@@ -469,6 +490,7 @@
     var ctx = { moisDebut: opts.moisDebut, maintenant: opts.maintenant };
     carte.innerHTML = "";
     carte.className = "tb-bloc tb-bloc--" + (b.type || "graphique") + (b.accent ? " tb-bloc--accent" : "");
+    carte.classList.remove("tb-bloc--statut-vert", "tb-bloc--statut-orange", "tb-bloc--statut-rouge");
     if (couleurSure(b.accent)) { carte.style.borderTopColor = b.accent; } else { carte.style.borderTopColor = ""; }
     var niveau = opts.titreNiveau || 2;
     var tete = el("div", "tb-bloc__tete");
@@ -709,7 +731,7 @@
   }
 
   global.Tableau = {
-    PALETTES: PALETTES, PALETTES_LIBELLES: PALETTES_LIBELLES, FORMES: FORMES,
+    statutSeuils: statutSeuils, PALETTES: PALETTES, PALETTES_LIBELLES: PALETTES_LIBELLES, FORMES: FORMES,
     completerTableau: completerTableau, monter: monter, rendreBloc: rendreBloc,
     tablesUtilisees: tablesUtilisees, texteRiche: texteRiche, calculerGraphique: calculerGraphique
   };

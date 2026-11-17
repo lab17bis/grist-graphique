@@ -37,6 +37,10 @@
 .tb-donnees .fr-table { margin-top: 0.5rem; margin-bottom: 0.5rem; }
 
 .tb-kpi { position: relative; }
+.tb-kpi__statut { margin-bottom: 0.25rem; }
+.tb-bloc--statut-vert { border-top-color: var(--border-plain-success) !important; }
+.tb-bloc--statut-orange { border-top-color: var(--border-plain-warning) !important; }
+.tb-bloc--statut-rouge { border-top-color: var(--border-plain-error) !important; }
 .tb-bloc--indicateur { container-type: inline-size; }
 .tb-kpi__valeur { font-size: clamp(1.5rem, 13cqi, 2.5rem); line-height: 1.2; white-space: nowrap; font-weight: 700; margin: 0.25rem 0 0; color: var(--text-title-blue-france); font-variant-numeric: tabular-nums; }
 .tb-kpi__libelle { margin: 0 0 0.5rem; color: var(--text-mention-grey); }

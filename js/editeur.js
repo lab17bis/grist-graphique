@@ -211,6 +211,10 @@
       h += choix(ch.concat(["sensFavorable"]), "Une hausse est", [["hausse", "favorable (vert)"], ["baisse", "défavorable (rouge)"]], { defaut: "hausse" });
     }
     h += texte(ch.concat(["objectif"]), "Objectif (facultatif)", { nombre: true, aide: "Affiche une barre de progression vers cette valeur." });
+    h += "<h4 class=\"fr-h6 ed-titre\">Seuils d'alerte (management visuel)</h4>";
+    h += choix(ch.concat(["seuils", "sens"]), "Une valeur élevée est", [["hausse", "bonne (ex. taux de satisfaction)"], ["baisse", "mauvaise (ex. délai, nombre de retards)"]], { defaut: "hausse" });
+    h += "<div class=\"ed-deux\">" + texte(ch.concat(["seuils", "alerte"]), "Seuil « À surveiller »", { nombre: true, aide: "Orange au-delà de ce seuil, dans le mauvais sens." }) +
+      texte(ch.concat(["seuils", "critique"]), "Seuil « Critique »", { nombre: true, aide: "Rouge au-delà de ce seuil." }) + "</div>";
     h += colonne(ch.concat(["tendance", "colonne"]), "Petite courbe d'évolution selon la date", b.table, { familles: ["date"], vide: "— Pas de courbe —" });
     if (b.tendance && b.tendance.colonne) { h += choix(ch.concat(["tendance", "pas"]), "Pas de la courbe", C.PAS_DATE.slice(0, 5), { defaut: "mois" }); }
     h += couleur(ch.concat(["accent"]), "Couleur du filet supérieur");
