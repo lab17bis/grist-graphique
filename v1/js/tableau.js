@@ -212,6 +212,7 @@
     o.tooltip.axisPointer = { type: b.forme === "lignes" || b.forme === "aires" ? "line" : "shadow" };
     o.tooltip.valueFormatter = function (v) { return C.format(v, f); };
     o.legend = legende(b, g.series.length);
+    if (o.legend.show && o.legend.bottom === 0) { o.grid.bottom = Math.max(o.grid.bottom, 48); }
     if (g.categories.length > 30 && !horizontal) { o.dataZoom = [{ type: "inside" }, { type: "slider", height: 18, bottom: o.legend.show ? 32 : 4 }]; o.grid.bottom += 32; }
     o.series = g.series.map(function (s, i) {
       var m = (b.mesures || [])[i] || {};
@@ -279,6 +280,7 @@
     var cols = couleurs(b, g.series.map(function (s) { return s.nom; }), b.series && b.series.colonne, t);
     var o = base(b);
     o.legend = legende(b, g.series.length);
+    if (o.legend.show && o.legend.bottom === 0) { o.grid.bottom = Math.max(o.grid.bottom, 48); }
     o.tooltip.trigger = "item";
     o.radar = { indicator: g.categories.map(function (c) { return { name: c.libelle, max: b.empile === "100" ? 100 : (Number(b.max) || max * 1.1 || 1) }; }), axisName: { color: GRIS, fontFamily: POLICE }, splitLine: { lineStyle: { color: TRAIT } }, radius: "65%" };
     o.series = [{ type: "radar", data: g.series.map(function (s, i) { return { name: s.nom, value: s.valeurs.map(function (v) { return v || 0; }), itemStyle: { color: cols[i] }, lineStyle: { width: 2, color: cols[i] }, areaStyle: { opacity: 0.12 } }; }), tooltip: { valueFormatter: function (v) { return C.format(v, f); } } }];
