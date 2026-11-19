@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr" data-fr-scheme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tableau de bord</title>
+  <link rel="stylesheet" href="vendor/dsfr/dsfr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.15.4/dist/utility/icons/icons.min.css">
+  <link rel="stylesheet" href="css/page.css?v=1">
+  <link rel="stylesheet" href="css/tableau.css?v=3">
+</head>
+<body>
+  <div class="fr-skiplinks">
+    <nav class="fr-container" role="navigation" aria-label="Accès rapide">
+      <ul class="fr-skiplinks__list">
+        <li><a class="fr-link" href="#contenu">Contenu</a></li>
+        <li><a class="fr-link" href="#pied">Pied de page</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div id="entete"></div>
+  <main class="fr-container fr-py-4w" id="contenu" tabindex="-1">
+    <p class="fr-text--sm">Chargement…</p>
+  </main>
+  <div id="pied"></div>
+
+  <script>
+    // API Grist chargée seulement dans un widget (cadre Grist).
+    if (window.self !== window.top && !/[?&](grist|demo)=?/.test(location.search)) {
+      document.write('<script src="https://docs.getgrist.com/grist-plugin-api.js"><\/script>');
+    }
+  </script>
+  <script src="vendor/echarts/echarts.min.js?v=6.1.0"></script>
+  <script src="vendor/echarts/langFR.js?v=6.1.0"></script>
+  <script src="js/page-dsfr.js?v=1"></script>
+  <script src="js/calcul.js?v=1"></script>
+  <script src="js/donnees.js?v=1"></script>
+  <script src="js/tableau.js?v=5"></script>
+  <script src="js/lecture.js?v=1"></script>
+</body>
+</html>

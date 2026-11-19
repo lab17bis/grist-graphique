@@ -17,7 +17,7 @@ Les graphiques intégrés à Grist offrent peu de types, peu de calculs et se r�
 
 Un graphique seul est un tableau de bord d'un seul bloc : un même outil couvre les deux usages.
 
-Démonstration avec des données fictives : <https://lab17bis.github.io/grist-graphique/?demo>
+Démonstration avec des données fictives : <https://lab17bis.github.io/grist-graphique/v1/?demo>
 
 ## Ce que le widget sait faire
 
@@ -48,11 +48,11 @@ Démonstration avec des données fictives : <https://lab17bis.github.io/grist-gr
 ## Le brancher en 5 minutes
 
 1. **Partir du modèle** (recommandé) : téléchargez [`modele/modele-grist-graphique.grist`](modele/modele-grist-graphique.grist), puis importez-le dans Grist (*Ajouter › Importer un document*). Il contient une table d'exemple vide et les pages de l'éditeur et de la lecture. Vous pouvez aussi partir de votre propre document.
-2. **Ajouter l'éditeur** : ajoutez une vue *Personnalisée* (sur n'importe quelle table : ses réglages y seront enregistrés), avec l'adresse `https://lab17bis.github.io/grist-graphique/editeur.html`, et accordez l'**accès complet**.
+2. **Ajouter l'éditeur** : ajoutez une vue *Personnalisée* (sur n'importe quelle table : ses réglages y seront enregistrés), avec l'adresse `https://lab17bis.github.io/grist-graphique/v1/editeur.html`, et accordez l'**accès complet**.
 3. **Composer** : cliquez sur *Proposer* pour partir d'une table, ou ajoutez vos blocs un à un. Chaque bloc ouvert montre son aperçu avec vos données. Cliquez sur *Enregistrer*.
-4. **Consulter dans Grist** : ajoutez une seconde vue *Personnalisée* sur la même table, avec l'adresse `https://lab17bis.github.io/grist-graphique/index.html` (accès complet). Chaque personne voit les données selon ses droits.
+4. **Consulter dans Grist** : ajoutez une seconde vue *Personnalisée* sur la même table, avec l'adresse `https://lab17bis.github.io/grist-graphique/v1/index.html` (accès complet). Chaque personne voit les données selon ses droits.
 5. **Diffuser** (facultatif) : partagez le document en lecture publique. L'onglet *Publication* vérifie l'accès et donne le lien de la page :
-   `https://lab17bis.github.io/grist-graphique/?grist=<lien du document>&table=<table des réglages>`
+   `https://lab17bis.github.io/grist-graphique/v1/?grist=<lien du document>&table=<table des réglages>`
 
 ## Le régler
 
@@ -103,6 +103,26 @@ Visiteur ──> page DSFR (ce dépôt, GitHub Pages)
 - Dans Grist, le tableau de bord se recalcule quand la table des réglages change, ou avec le bouton *Actualiser les données*.
 - Les filtres communs relient les tables par le **nom** de la colonne.
 - Aucun audit RGAA n'a été mené.
+
+## Version stable et version en cours
+
+Dans Grist, utilisez l'adresse de la **version stable** : `https://lab17bis.github.io/grist-graphique/v1/`. Elle ne change que pour corriger un défaut, sans toucher aux tables ni aux réglages. Une évolution qui les modifie paraît sous une nouvelle adresse (`v2/`) : les documents déjà en service restent sur `v1/` tant que vous ne changez pas l'adresse du widget.
+
+L'adresse sans numéro (`https://lab17bis.github.io/grist-graphique/`) suit la version en cours de développement. Elle sert à essayer les nouveautés ; ne l'utilisez pas pour un document en service.
+
+Pour figer une nouvelle version stable après des tests réussis : `sh outils/figer-version.sh 1` (ou `2` pour une version qui change les tables), puis publiez le dépôt.
+
+## Données partagées avec les autres outils
+
+Plusieurs outils de la même famille peuvent travailler dans un même document Grist. Ils suivent une règle commune pour ne pas dupliquer les données :
+
+- **Une seule table `Personnes`** par document. Colonne commune : `Nom`. Colonnes facultatives reconnues par tous : `Email` et `Structure` (référence à `Structures`). Un outil lit cette table si elle existe et la crée seulement si elle manque. Il n'y ajoute que ses propres colonnes.
+- **Une seule table `Structures`** pour les équipes, services ou établissements : `Nom`, `Sigle`, `Type`, `Parent` (structure de rattachement).
+- **Aucun outil ne supprime ni ne renomme** une table ou une colonne qu'il n'a pas créée.
+- **Les autres tables portent des noms propres à chaque outil**, pour éviter les collisions (par exemple `Actions` pour grist-projet, `Actions_reunion` pour grist-reunion). Les réglages sont rangés dans la description d'une colonne technique propre à l'outil (`Config_…`).
+- **Identifier la personne connectée** : un widget ne connaît pas l'adresse de la personne connectée. Les colonnes « créé par » utilisent une formule `user.Email` calculée à la création. Seul un outil qui doit relier la personne connectée à sa fiche crée la table `Comptes`.
+
+Ce que fait cet outil : Il ne crée aucune table : il lit celles du document, `Personnes` et `Structures` comprises, ce qui permet par exemple de compter des personnes par structure.
 
 ## Espaces clés en main
 

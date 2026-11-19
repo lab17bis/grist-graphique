@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr" data-fr-scheme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Éditeur de tableaux de bord</title>
+  <link rel="stylesheet" href="vendor/dsfr/dsfr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.15.4/dist/utility/icons/icons.min.css">
+  <link rel="stylesheet" href="css/page.css?v=1">
+  <link rel="stylesheet" href="css/tableau.css?v=3">
+  <link rel="stylesheet" href="css/editeur.css?v=1">
+  <script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+</head>
+<body>
+  <div class="ed-barre">
+    <div class="ed-barre__titre">
+      <p class="ed-nom">Tableau de bord</p>
+      <p class="fr-badge fr-badge--sm" id="etat">Chargement…</p>
+    </div>
+    <fieldset class="fr-segmented fr-segmented--sm">
+      <legend class="fr-segmented__legend fr-sr-only">Vue de l'éditeur</legend>
+      <div class="fr-segmented__elements">
+        <div class="fr-segmented__element"><input value="blocs" checked type="radio" id="o-blocs" name="onglet"><label class="fr-label" for="o-blocs">Blocs</label></div>
+        <div class="fr-segmented__element"><input value="filtres" type="radio" id="o-filtres" name="onglet"><label class="fr-label" for="o-filtres">Filtres</label></div>
+        <div class="fr-segmented__element"><input value="page" type="radio" id="o-page" name="onglet"><label class="fr-label" for="o-page">En-tête et pied</label></div>
+        <div class="fr-segmented__element"><input value="apercu" type="radio" id="o-apercu" name="onglet"><label class="fr-label" for="o-apercu">Aperçu</label></div>
+        <div class="fr-segmented__element"><input value="publication" type="radio" id="o-publication" name="onglet"><label class="fr-label" for="o-publication">Publication</label></div>
+      </div>
+    </fieldset>
+    <button type="button" class="fr-btn fr-btn--sm fr-icon-save-line fr-btn--icon-left" id="enregistrer">Enregistrer</button>
+  </div>
+  <div id="message" class="ed-message" aria-live="polite"></div>
+  <main id="vue" class="ed-vue"></main>
+
+  <script src="vendor/echarts/echarts.min.js?v=6.1.0"></script>
+  <script src="vendor/echarts/langFR.js?v=6.1.0"></script>
+  <script src="js/page-dsfr.js?v=1"></script>
+  <script src="js/page-editeur.js?v=5"></script>
+  <script src="js/calcul.js?v=1"></script>
+  <script src="js/donnees.js?v=1"></script>
+  <script src="js/tableau.js?v=5"></script>
+  <script src="js/editeur.js?v=5"></script>
+</body>
+</html>
