@@ -20,8 +20,9 @@ body { background: var(--background-alt-grey); font-size: 0.875rem; }
 .ed-deux { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
 @media (max-width: 520px) { .ed-deux { grid-template-columns: 1fr; } }
 .ed-ligne-form { display: flex; align-items: flex-end; gap: 1rem; flex-wrap: wrap; }
-.ed-ligne-form .fr-select-group { flex: 1 1 14rem; max-width: 24rem; margin-bottom: 1.5rem; }
-.ed-ligne-form .fr-btn { margin-bottom: 1.5rem; }
+.ed-ligne-form .fr-select-group { flex: 1 1 14rem; min-width: 0; max-width: 24rem; margin-bottom: 1.5rem; }
+.ed-ligne-form .fr-select { max-width: 100%; }
+.ed-ligne-form .fr-btn { flex: 0 0 auto; position: relative; margin-bottom: 1.5rem; }
 .ed-proposer summary { cursor: pointer; color: var(--text-action-high-blue-france); margin-top: 0.5rem; }
 .ed-gris { color: var(--text-mention-grey); }
 .ed-titre { margin: 1.5rem 0 0.75rem; padding-top: 1rem; border-top: 1px solid var(--border-default-grey); font-size: 1rem; }
