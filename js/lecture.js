@@ -37,6 +37,12 @@
     var config = normaliser(lu.config);
     if (!config || !config.tableaux.length) {
       erreur("Tableau de bord non configuré", "Ce document ne contient pas encore de tableau de bord. Créez-le avec l'éditeur (editeur.html) dans Grist.");
+      if (source.mode === "widget" || source.mode === "demo") {
+        var vide = document.createElement("p");
+        vide.className = "fr-mt-2w";
+        vide.innerHTML = "<a class=\"fr-btn\" href=\"editeur.html" + esc(location.search) + "\">Configurer le tableau de bord</a>";
+        app.appendChild(vide);
+      }
       return;
     }
     var tb = config.tableaux.find(function (t) { return t.id === choix; }) || config.tableaux[0];
@@ -82,7 +88,7 @@
     if (source.mode === "widget") {
       var p = document.createElement("p");
       p.className = "fr-mt-2w";
-      p.innerHTML = "<button type=\"button\" class=\"fr-btn fr-btn--sm fr-btn--tertiary fr-icon-refresh-line fr-btn--icon-left\">Actualiser les données</button>";
+      p.innerHTML = "<button type=\"button\" class=\"fr-btn fr-btn--sm fr-btn--tertiary fr-icon-refresh-line fr-btn--icon-left\">Actualiser les données</button> <a class=\"fr-btn fr-btn--sm fr-btn--tertiary\" href=\"editeur.html" + esc(location.search) + "\">Configurer</a>";
       p.querySelector("button").addEventListener("click", recharger);
       app.appendChild(p);
     }

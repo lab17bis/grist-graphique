@@ -50,7 +50,7 @@ Démonstration avec des données fictives : <https://lab17bis.github.io/grist-gr
 1. **Partir du modèle** (recommandé) : téléchargez [`modele/modele-grist-graphique.grist`](modele/modele-grist-graphique.grist), puis importez-le dans Grist (*Ajouter › Importer un document*). Il contient une table d'exemple vide et les pages de l'éditeur et de la lecture. Vous pouvez aussi partir de votre propre document.
 2. **Ajouter l'éditeur** : ajoutez une vue *Personnalisée* (sur n'importe quelle table : ses réglages y seront enregistrés), avec l'adresse `https://lab17bis.github.io/grist-graphique/v1/editeur.html`, et accordez l'**accès complet**.
 3. **Composer** : cliquez sur *Proposer* pour partir d'une table, ou ajoutez vos blocs un à un. Chaque bloc ouvert montre son aperçu avec vos données. Cliquez sur *Enregistrer*.
-4. **Consulter dans Grist** : ajoutez une seconde vue *Personnalisée* sur la même table, avec l'adresse `https://lab17bis.github.io/grist-graphique/v1/index.html` (accès complet). Chaque personne voit les données selon ses droits.
+4. **Consulter dans Grist** : la page de lecture affiche un bouton *Configurer* (qui ouvre l'éditeur) et l'éditeur un bouton *Voir le tableau de bord* : un seul widget suffit pour essayer. Pour séparer la lecture de l'édition, ajoutez une seconde vue *Personnalisée* sur la même table, avec l'adresse `https://lab17bis.github.io/grist-graphique/v1/index.html` (accès complet). Chaque personne voit les données selon ses droits.
 5. **Diffuser** (facultatif) : partagez le document en lecture publique. L'onglet *Publication* vérifie l'accès et donne le lien de la page :
    `https://lab17bis.github.io/grist-graphique/v1/?grist=<lien du document>&table=<table des réglages>`
 
