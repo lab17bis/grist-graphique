@@ -112,7 +112,7 @@
     if (enCours) { return; }
     enCours = true;
     afficher(source, source.mode === "widget" ? choixWidget : params.get("tableau")).catch(function (e) {
-      if (source.mode === "widget") { erreur("Lecture impossible", "Accordez l'accès complet au document à ce widget. (" + e.message + ")"); }
+      if (source.mode === "widget") { erreur("Lecture impossible", "Si vous gérez ce document : accordez l'accès complet au document à ce widget (panneau de droite de Grist, rubrique Accès). Sinon, votre compte n'a pas le droit de lire ces données : demandez un accès à la personne qui gère le document. (" + e.message + ")"); }
       else { erreur("Tableau de bord momentanément indisponible", "Les données n'ont pas pu être chargées. Vérifiez que le document Grist est partagé en lecture publique. (" + e.message + ")"); }
     }).then(function () { enCours = false; });
   }

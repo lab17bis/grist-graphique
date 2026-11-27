@@ -754,7 +754,7 @@
   function lancer() {
     if (lance) { return; }
     lance = true;
-    demarrer().catch(function (e) { lance = false; message("error", "Lecture impossible : accordez l'accès complet au document. (" + (e.message || e) + ")"); });
+    demarrer().catch(function (e) { lance = false; message("error", "Lecture impossible. Si vous gérez ce document : accordez l'accès complet au document à ce widget (panneau de droite de Grist, rubrique Accès). Sinon, votre compte n'a pas le droit de lire ces données : demandez un accès à la personne qui gère le document. (" + (e.message || e) + ")"); });
   }
   grist.onRecords(lancer);
   setTimeout(lancer, 800);

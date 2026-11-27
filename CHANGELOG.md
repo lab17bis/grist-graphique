@@ -2,6 +2,9 @@
 
 Les adresses `/v1/` ne changent pas : chaque version ajoute ou corrige, sans retirer ce qui existe.
 
+## 2026-11-27 (message d'accès)
+- Lecture impossible : le message distingue la personne qui gère le document (accorder l'accès complet au widget) et la personne sans droit de lecture (demander un accès).
+
 ## 2026-11-27 (adresse refusée)
 - Publication : une adresse de page contenant l'identifiant long du document est refusée avec un message qui explique quoi copier (Grist ignore la page dans ce cas).
 
