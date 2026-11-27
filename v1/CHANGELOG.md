@@ -3,6 +3,7 @@
 Les adresses `/v1/` ne changent pas : chaque version ajoute ou corrige, sans retirer ce qui existe.
 
 ## 2026-11-27 (accès au document)
+- Barre de l'éditeur : le nom du widget et son statut restent sur une ligne ; la barre ne change plus de hauteur quand le statut passe à « non enregistré ».
 - Fichier commun `commun/barre.js` mis à jour (contrôle d'accès des autres widgets) ; cet éditeur garde son propre message en cas de lecture impossible.
 
 ## 2026-11-27 (export et import dans Réglages)
