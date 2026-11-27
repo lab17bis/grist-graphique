@@ -2,6 +2,11 @@
 
 Les adresses `/v1/` ne changent pas : chaque version ajoute ou corrige, sans retirer ce qui existe.
 
+## 2026-11-27 (parts et pourcentages)
+
+### Corrigé
+- Secteurs, anneau, entonnoir et treemap avec « Étiquettes en pourcentage » : le tableau « Voir les données » affichait les effectifs suivis d'un « % » (19 devenait « 19 % » au lieu de 70 %). Il montre maintenant l'effectif et, dans une colonne « Part », sa part du total, avec les décimales du réglage. L'infobulle, l'entonnoir, le treemap et le total au centre de l'anneau affichent l'effectif sans « % » collé ; seules les parts portent le « % ». Les tables et réglages ne changent pas.
+
 ## 2026-11-25 (mention de conception)
 
 ### Ajouté

@@ -241,7 +241,9 @@
   }
 
   function optionParts(b, g, t) {
-    var f = fmt(b);
+    // Les valeurs d'un graphique en parts restent des effectifs : le pourcentage n'est qu'un affichage (parts calculées sur le total).
+    var f = Object.assign({}, b.format || {});
+    var fp = { unite: "%", decimales: f.decimales === undefined ? 0 : f.decimales };
     var s = g.series[0] || { valeurs: [] };
     var libs = g.categories.map(function (c) { return c.libelle; });
     var cols = couleurs(b, libs, b.axe && b.axe.colonne, t);
@@ -249,7 +251,7 @@
     var total = data.reduce(function (a, d) { return a + (d.value || 0); }, 0);
     var o = base(b);
     o.tooltip.trigger = "item";
-    o.tooltip.formatter = function (p) { return esc(p.name) + "<br><strong>" + esc(C.format(p.value, f)) + "</strong> (" + C.format(total ? 100 * p.value / total : 0, { decimales: 0, unite: "%" }) + ")"; };
+    o.tooltip.formatter = function (p) { return esc(p.name) + "<br><strong>" + esc(C.format(p.value, f)) + "</strong> (" + C.format(total ? 100 * p.value / total : 0, fp) + ")"; };
     o.legend = legende(Object.assign({}, b, { legende: b.legende || "bas" }), 2);
     if (b.forme === "entonnoir") {
       o.series = [{ type: "funnel", data: data, sort: "descending", gap: 2, left: "10%", width: "80%", top: 8, bottom: o.legend.show ? 40 : 8, label: { show: true, position: "inside", color: "#fff", fontFamily: POLICE, formatter: function (p) { return C.format(p.value, f); } } }];
@@ -264,7 +266,7 @@
     o.series = [{
       type: "pie", data: data, radius: anneau ? ["45%", "72%"] : [0, "72%"], center: ["50%", o.legend.show ? "45%" : "50%"],
       avoidLabelOverlap: true, itemStyle: { borderColor: "#fff", borderWidth: 2 },
-      label: { show: b.etiquettes !== false, fontFamily: POLICE, color: GRIS, formatter: function (p) { return p.name + " : " + C.format(b.pourcentage ? p.percent : p.value, b.pourcentage ? { unite: "%", decimales: 0 } : f); } },
+      label: { show: b.etiquettes !== false, fontFamily: POLICE, color: GRIS, formatter: function (p) { return p.name + " : " + C.format(b.pourcentage ? p.percent : p.value, b.pourcentage ? fp : f); } },
       labelLine: { length: 8, length2: 8 }
     }];
     if (anneau && b.totalAuCentre !== false) {
@@ -377,6 +379,18 @@
     var g = C.grouper(lignes, opts, t.colonnes, ctx);
     var option = motifsAuto(b, parts ? optionParts(b, g, t) : forme === "radar" ? optionRadar(b, g, t) : forme === "carte-chaleur" && g.series.length ? optionChaleur(b, g) : optionCategories(b, g, t));
     var f = fmt(b);
+    if (parts && b.pourcentage) {
+      // Même information que le graphique : l'effectif et sa part du total, avec les décimales du réglage.
+      var fe = Object.assign({}, b.format || {}), fp = { unite: "%", decimales: fe.decimales === undefined ? 0 : fe.decimales };
+      var sp = g.series[0] || { valeurs: [], nom: "" };
+      var tot = sp.valeurs.reduce(function (a, v) { return a + (v || 0); }, 0);
+      return {
+        option: option, groupes: g,
+        entetes: [libCol(t, (b.axe || {}).colonne) || "", sp.nom || "Valeur", "Part"],
+        lignes: g.categories.map(function (c, i) { var v = sp.valeurs[i]; return [c.libelle, C.format(v, fe), C.format(tot ? 100 * (v || 0) / tot : 0, fp)]; }),
+        brutes: g.categories.map(function (c, i) { var v = sp.valeurs[i]; return [c.libelle, v === null || v === undefined ? "" : Math.round(v * 1000) / 1000, tot ? Math.round(100000 * (v || 0) / tot) / 1000 : 0]; })
+      };
+    }
     return {
       option: option, groupes: g,
       entetes: [libCol(t, (b.axe || {}).colonne) || ""].concat(g.series.map(function (s) { return s.nom || "Valeur"; })),
