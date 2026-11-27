@@ -426,6 +426,11 @@
     var lien = lienPublic();
     var h = "<div class=\"ed-panneau\"><h2 class=\"fr-h5\">Diffuser le tableau de bord</h2>";
     h += "<h3 class=\"fr-h6\">Dans Grist</h3><p class=\"fr-text--sm\">Pour consulter le tableau de bord sans l'éditeur, ajoutez une vue <strong>Personnalisée</strong> sur la table <code>" + esc(E.hote) + "</code> avec l'adresse <code>" + esc(new URL("index.html", location.href).href) + "</code> et l'<strong>accès complet</strong>. Chaque personne y voit les données selon ses droits.</p>";
+    h += "<h3 class=\"fr-h6\">Lien réservé aux personnes invitées</h3><p class=\"fr-text--sm\">Alternative à la page publique : la page de Grist s'affiche en plein écran, sans menus, mais <strong>seules les personnes invitées dans le document</strong> peuvent l'ouvrir (les autres voient une demande de connexion, aucune donnée). Dans Grist, cliquez sur <strong>Partager</strong> et invitez les personnes avec le rôle <strong>Lecteur</strong>, sans activer l'accès public. Ouvrez la page qui contient le tableau de bord, copiez son adresse et collez-la ci-dessous. Ce n'est pas un verrou : seules les invitations protègent les données.</p>" +
+      "<div class=\"fr-input-group\"><label class=\"fr-label\" for=\"page-grist\">Adresse de la page Grist" + aide("Exemple : https://grist.exemple.fr/o/equipe/xxxx/Mon-document/p/3") + "</label><input class=\"fr-input\" id=\"page-grist\" type=\"url\"></div>" +
+      "<div class=\"fr-input-group\"><label class=\"fr-label\" for=\"lien-reserve\">Lien à envoyer aux personnes invitées</label><input class=\"fr-input\" id=\"lien-reserve\" readonly></div>" +
+      "<ul class=\"fr-btns-group fr-btns-group--inline fr-btns-group--sm\"><li><button type=\"button\" class=\"fr-btn fr-btn--tertiary\" data-action=\"copier\" data-cible=\"lien-reserve\">Copier le lien réservé</button></li></ul>" +
+      "<div class=\"fr-callout fr-mb-3w\"><p class=\"fr-callout__text fr-text--sm\"><strong>Page publique ou lien réservé ?</strong> Publique : toute personne qui a le lien voit les données des tables exposées, sans compte. Réservée : il faut être invité et connecté. Pour des données internes ou personnelles, choisissez le lien réservé.</p></div>";
     h += "<h3 class=\"fr-h6\">Page publique</h3><p class=\"fr-text--sm\">Le document doit être partagé en lecture publique. <strong>Attention :</strong> toutes les lignes et colonnes lisibles des tables utilisées deviennent consultables par toute personne qui a le lien, pas seulement les chiffres affichés. Restreignez-les avec les règles d'accès, ou faites calculer le tableau de bord sur des tables de synthèse.</p>";
     h += "<button type=\"button\" class=\"fr-btn fr-btn--sm fr-btn--secondary fr-mb-2w\" data-action=\"verifier\">Vérifier l'accès public</button><div id=\"verification\" aria-live=\"polite\"></div>";
     h += "<div class=\"fr-input-group\"><label class=\"fr-label\" for=\"lien-public\">Lien de la page" + aide("Pour le tableau de bord « " + (tb().titre || "") + " ». Enregistrez avant de diffuser.") + "</label><input class=\"fr-input\" id=\"lien-public\" readonly value=\"" + esc(lien) + "\"></div>" +
@@ -513,6 +518,14 @@
     z.innerHTML = E.vue === "filtres" ? vueFiltres() : E.vue === "publication" ? vuePublication() : vueBlocs();
     window.scrollTo(0, y);
     if (E.vue === "blocs") { apercuBloc(); }
+    if (E.vue === "publication") {
+      var pg = $("#page-grist");
+      if (pg) { pg.addEventListener("input", function () {
+        var r = $("#lien-reserve"), v = pg.value.trim();
+        if (!v) { r.value = ""; return; }
+        try { var u = new URL(v); u.search = ""; u.searchParams.set("embed", "true"); r.value = u.href; } catch (e) { r.value = "Adresse non reconnue : collez l'adresse complète de la page Grist."; }
+      }); }
+    }
     if (E.vue === "filtres") {
       // Les valeurs proposées viennent des tables utilisées.
       var manquantes = T.tablesUtilisees(tb()).filter(function (n) { return !E.donnees[n]; });

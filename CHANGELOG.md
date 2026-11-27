@@ -2,6 +2,12 @@
 
 Les adresses `/v1/` ne changent pas : chaque version ajoute ou corrige, sans retirer ce qui existe.
 
+## 2026-11-27 (publication réservée)
+
+### Ajouté
+
+- Onglet Publication : section « Lien réservé aux personnes invitées » (collez l'adresse de la page Grist, le lien en consultation plein écran se construit) et rappel de la différence entre page publique et lien réservé.
+
 ## 2026-11-27 (parts et pourcentages)
 
 ### Corrigé
