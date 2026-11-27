@@ -19,6 +19,41 @@
     date: ["periode", "sup", "supEgal", "inf", "infEgal", "vide", "rempli"],
     booleen: ["vrai", "faux"]
   };
+
+  // Barre commune de l'éditeur (commun/barre.js) : Réglages, En-tête et pied, Aperçu, Publication.
+  var BL = window.BarreLab, PAGE_USAGE = false;
+  // Arrivée depuis la page de lecture (bouton « Configurer ») : un bouton y ramène.
+  var RETOUR = (function () {
+    try {
+      var r = new URL(document.referrer), dossier = function (u) { return u.pathname.replace(/[^\/]*$/, ""); };
+      return r.origin === location.origin && !/editeur\.html$/.test(r.pathname) && dossier(r) === dossier(location) ? document.referrer : null;
+    } catch (e) { return null; }
+  })();
+  var BARRE = BL ? BL.creer(document.body, {
+    nom: "Widget graphique", idEtat: "etat", idEnregistrer: "enregistrer", actif: E.vue,
+    onglets: [{ id: "reglages", libelle: "Réglages", sous: [{ id: "blocs", libelle: "Blocs" }, { id: "filtres", libelle: "Filtres" }] },
+      { id: "page", libelle: "En-tête et pied" }, { id: "apercu", libelle: "Aperçu" }, { id: "publication", libelle: "Publication" }],
+    annuler: RETOUR ? "Fermer l'éditeur" : null,
+    surAnnuler: function () { if (!E.modifie || window.confirm("Fermer sans enregistrer les modifications ?")) { E.modifie = false; location.href = RETOUR; } },
+    surChoix: function (i) { E.vue = i; afficher(); }
+  }) : null;
+  // Page d'usage : même lien, sans barre ; l'Aperçu en pleine page. Choix propre à chaque vue Grist (onglet Publication).
+  function modeUsage(oui) {
+    PAGE_USAGE = !!oui;
+    if (!BL) { return; }
+    BL.pageUsage(PAGE_USAGE);
+    if (PAGE_USAGE) { BL.lienEditer(function () { modeUsage(false); E.vue = "blocs"; afficher(); window.scrollTo(0, 0); }); }
+  }
+  function blocMode() {
+    if (!BL || E.vue !== "publication") { return; }
+    var p = document.querySelector("#vue .ed-panneau");
+    if (!p || p.querySelector(".cl-mode")) { return; }
+    p.insertAdjacentHTML("afterbegin", BL.modeHtml("ed", PAGE_USAGE ? "page" : "editeur"));
+    BL.brancherMode(p, "ed", function (m, ok) {
+      if (!ok) { message("warning", "Affichage appliqué pour cette fois seulement : Grist n'a pas enregistré le choix (droits insuffisants sur le document ?)."); }
+      if (m === "page") { modeUsage(true); E.vue = "apercu"; afficher(); } else { message("success", "Cette vue Grist affiche l'éditeur du widget."); }
+    });
+  }
   var LIB_OPS_DATE = { sup: "est après le", supEgal: "est le ou après le", inf: "est avant le", infEgal: "est le ou avant le" };
 
   /* ---------- Utilitaires ---------- */
@@ -501,9 +536,10 @@
   }
 
   function afficher() {
+    if (PAGE_USAGE) { E.vue = "apercu"; }
+    if (BARRE) { BARRE.choisir(E.vue); }
     var y = window.scrollY;
     if (E.apercu && E.vue !== "apercu") { E.apercu.detruire(); E.apercu = null; }
-    Array.prototype.forEach.call(document.querySelectorAll("input[name=onglet]"), function (r) { r.checked = r.value === E.vue; });
     var z = $("#vue");
     if (E.vue === "page") {
       z.innerHTML = "";
@@ -519,6 +555,7 @@
     window.scrollTo(0, y);
     if (E.vue === "blocs") { apercuBloc(); }
     if (E.vue === "publication") {
+      blocMode();
       var pg = $("#page-grist");
       if (pg) { pg.addEventListener("input", function () {
         var r = $("#lien-reserve"), v = pg.value.trim();
@@ -750,6 +787,7 @@
     return;
   }
   grist.ready({ requiredAccess: "full" });
+  if (BL) { BL.mode().then(function (m) { if (m === "page" && !E.modifie) { modeUsage(true); E.vue = "apercu"; if (E.config) { afficher(); } } }); }
   var lance = false;
   function lancer() {
     if (lance) { return; }

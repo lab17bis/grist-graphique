@@ -50,7 +50,7 @@ Démonstration avec des données fictives : <https://lab17bis.github.io/grist-gr
 1. **Partir du modèle** (recommandé) : téléchargez [`modele/modele-grist-graphique.grist`](modele/modele-grist-graphique.grist), puis importez-le dans Grist (*Ajouter › Importer un document*). Il contient une table d'exemple vide et les pages de l'éditeur et de la lecture. Vous pouvez aussi partir de votre propre document.
 2. **Ajouter l'éditeur** : ajoutez une vue *Personnalisée* (sur n'importe quelle table : ses réglages y seront enregistrés), avec l'adresse `https://lab17bis.github.io/grist-graphique/v1/editeur.html`, et accordez l'**accès complet**.
 3. **Composer** : cliquez sur *Proposer* pour partir d'une table, ou ajoutez vos blocs un à un. Chaque bloc ouvert montre son aperçu avec vos données. Cliquez sur *Enregistrer*.
-4. **Consulter dans Grist** : la page de lecture affiche un bouton *Configurer* (qui ouvre l'éditeur) et l'éditeur un bouton *Voir le tableau de bord* : un seul widget suffit pour essayer. Pour séparer la lecture de l'édition, ajoutez une seconde vue *Personnalisée* sur la même table, avec l'adresse `https://lab17bis.github.io/grist-graphique/v1/index.html` (accès complet). Chaque personne voit les données selon ses droits.
+4. **Consulter dans Grist** : avec la même adresse, chaque vue Grist affiche soit l'éditeur, soit la page d'usage (onglet *Publication*, rubrique *Affichage de cette vue Grist*) ; en page d'usage, le lien *Éditer le widget*, en bas de page, rouvre l'éditeur. La page de lecture `https://lab17bis.github.io/grist-graphique/v1/index.html` (accès complet) reste disponible : son bouton *Configurer* ouvre l'éditeur, et *Fermer l'éditeur* y ramène. Chaque personne voit les données selon ses droits.
 5. **Diffuser** (facultatif) : partagez le document en lecture publique. L'onglet *Publication* vérifie l'accès et donne le lien de la page :
    `https://lab17bis.github.io/grist-graphique/v1/?grist=<lien du document>&table=<table des réglages>`
 
@@ -58,8 +58,8 @@ Démonstration avec des données fictives : <https://lab17bis.github.io/grist-gr
 
 | Onglet de l'éditeur | Ce qu'on y règle |
 | --- | --- |
-| Blocs | Tableaux de bord (titre, introduction, début de l'année), ajout, ordre, largeur et réglages de chaque bloc, avec aperçu immédiat |
-| Filtres | Filtres affichés en haut du tableau de bord et valeur sélectionnée à l'ouverture |
+| Réglages › Blocs | Tableaux de bord (titre, introduction, début de l'année), ajout, ordre, largeur et réglages de chaque bloc, avec aperçu immédiat |
+| Réglages › Filtres | Filtres affichés en haut du tableau de bord et valeur sélectionnée à l'ouverture |
 | En-tête et pied | Logo, bloc-marque, titre, sous-titre, boutons, pied de page, mention d'accessibilité |
 | Aperçu | Le tableau de bord complet, filtres et clics compris |
 | Publication | Vue de lecture dans Grist, lien public, vérification de ce qui est lisible, code d'intégration, export et import des réglages |
