@@ -31,7 +31,7 @@
   })();
   var BARRE = BL ? BL.creer(document.body, {
     nom: "Widget graphique", idEtat: "etat", idEnregistrer: "enregistrer", actif: E.vue,
-    onglets: [{ id: "reglages", libelle: "Réglages", sous: [{ id: "blocs", libelle: "Blocs" }, { id: "filtres", libelle: "Filtres" }] },
+    onglets: [{ id: "reglages", libelle: "Réglages", sous: [{ id: "blocs", libelle: "Blocs" }, { id: "filtres", libelle: "Filtres" }, { id: "json", libelle: "Export et import" }] },
       { id: "page", libelle: "En-tête et pied" }, { id: "apercu", libelle: "Aperçu" }, { id: "publication", libelle: "Publication" }],
     annuler: RETOUR ? "Fermer l'éditeur" : null,
     surAnnuler: function () { if (!E.modifie || window.confirm("Fermer sans enregistrer les modifications ?")) { E.modifie = false; location.href = RETOUR; } },
@@ -472,7 +472,12 @@
       "<ul class=\"fr-btns-group fr-btns-group--inline fr-btns-group--sm\"><li><button type=\"button\" class=\"fr-btn fr-btn--tertiary\" data-action=\"copier\" data-cible=\"lien-public\">Copier le lien</button></li><li><a class=\"fr-btn fr-btn--tertiary\" href=\"" + esc(lien) + "\" target=\"_blank\" rel=\"noopener\">Ouvrir la page</a></li></ul>";
     var integre = lien ? "<iframe src=\"" + lien + "&integre=1\" title=\"" + esc(tb().titre || "Tableau de bord") + "\" style=\"width:100%;height:900px;border:0\"></iframe>" : "";
     h += "<div class=\"fr-input-group\"><label class=\"fr-label\" for=\"code-iframe\">Code d'intégration dans un autre site" + aide("Sans en-tête ni pied de page.") + "</label><textarea class=\"fr-input\" id=\"code-iframe\" rows=\"3\" readonly>" + esc(integre) + "</textarea></div>";
-    h += "<h3 class=\"fr-h6\">Réutiliser les réglages</h3><p class=\"fr-text--sm\">Copiez ce texte pour reprendre les tableaux de bord dans un autre document (les données ne sont pas copiées).</p>" +
+    return h + "</div>";
+  }
+
+  function vueJson() {
+    var h = "<div class=\"ed-panneau\">";
+    h += "<h2 class=\"fr-h5\">Export et import des réglages</h2><p class=\"fr-text--sm\">Copiez ce texte pour reprendre les tableaux de bord dans un autre document (les données ne sont pas copiées).</p>" +
       "<div class=\"fr-input-group\"><label class=\"fr-label\" for=\"config-json\">Réglages (JSON)</label><textarea class=\"fr-input ed-json\" id=\"config-json\" rows=\"8\">" + esc(JSON.stringify(E.config, null, 2)) + "</textarea></div>" +
       "<ul class=\"fr-btns-group fr-btns-group--inline fr-btns-group--sm\"><li><button type=\"button\" class=\"fr-btn fr-btn--tertiary\" data-action=\"copier\" data-cible=\"config-json\">Copier</button></li><li><button type=\"button\" class=\"fr-btn fr-btn--secondary\" data-action=\"importer\">Importer le texte collé</button></li></ul>";
     return h + "</div>";
@@ -551,7 +556,7 @@
       return;
     }
     if (E.vue === "apercu") { vueApercu(); return; }
-    z.innerHTML = E.vue === "filtres" ? vueFiltres() : E.vue === "publication" ? vuePublication() : vueBlocs();
+    z.innerHTML = E.vue === "filtres" ? vueFiltres() : E.vue === "json" ? vueJson() : E.vue === "publication" ? vuePublication() : vueBlocs();
     window.scrollTo(0, y);
     if (E.vue === "blocs") { apercuBloc(); }
     if (E.vue === "publication") {

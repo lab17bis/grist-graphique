@@ -2,11 +2,15 @@
 
 Les adresses `/v1/` ne changent pas : chaque version ajoute ou corrige, sans retirer ce qui existe.
 
+## 2026-11-27 (export et import dans Réglages)
+- L'export et l'import des réglages en JSON quittent l'onglet Publication : ils forment le sous-onglet « Export et import » de Réglages. Le contenu et le fonctionnement ne changent pas.
+
 ## 2026-11-27 (barre commune de l'éditeur)
 - Barre commune à tous les widgets (fichier partagé `commun/barre.js` et `commun/barre.css`) : nom du widget et statut à gauche, onglets Réglages, En-tête et pied, Aperçu, Publication au centre, Enregistrer à droite ; barre collante en haut de l'écran.
 - Les rubriques propres à l'éditeur deviennent des sous-onglets de Réglages.
 - Bouton « Voir le … » retiré (l'Aperçu le remplace) ; arrivé depuis la page de lecture, un bouton « Fermer l'éditeur » y ramène.
 - Même lien, deux affichages : chaque vue Grist choisit, dans Publication, l'éditeur du widget ou la page d'usage (l'Aperçu en pleine page, sans barre, avec un lien « Éditer le widget »). Le choix est une option de la vue Grist ; par défaut, rien ne change.
+- Affichage de la vue : après « Appliquer à cette vue », un texte rappelle de cliquer sur Enregistrer en haut de la vue Grist pour garder le choix (vérifié dans Grist).
 
 ## 2026-11-27 (message d'accès)
 - Lecture impossible : le message distingue la personne qui gère le document (accorder l'accès complet au widget) et la personne sans droit de lecture (demander un accès).

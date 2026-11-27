@@ -60,9 +60,10 @@ Démonstration avec des données fictives : <https://lab17bis.github.io/grist-gr
 | --- | --- |
 | Réglages › Blocs | Tableaux de bord (titre, introduction, début de l'année), ajout, ordre, largeur et réglages de chaque bloc, avec aperçu immédiat |
 | Réglages › Filtres | Filtres affichés en haut du tableau de bord et valeur sélectionnée à l'ouverture |
+| Réglages › Export et import | Réglages en JSON, à copier ou à reprendre dans un autre document (aucune donnée) |
 | En-tête et pied | Logo, bloc-marque, titre, sous-titre, boutons, pied de page, mention d'accessibilité |
 | Aperçu | Le tableau de bord complet, filtres et clics compris |
-| Publication | Vue de lecture dans Grist, lien public, vérification de ce qui est lisible, code d'intégration, export et import des réglages |
+| Publication | Vue de lecture dans Grist, lien public, vérification de ce qui est lisible, code d'intégration |
 
 Les réglages sont enregistrés en JSON dans la **description de la colonne `Config_graphique`** de la table où l'éditeur est placé. Ne supprimez pas cette colonne.
 
@@ -70,7 +71,7 @@ Les réglages sont enregistrés en JSON dans la **description de la colonne `Con
 
 - **L'utiliser tel quel** : pointez vos documents Grist vers les adresses ci-dessus. Aucune installation n'est nécessaire.
 - **L'héberger chez vous** : copiez le dépôt (*Fork*), activez GitHub Pages ou déposez les fichiers sur n'importe quel serveur web statique. Aucune compilation n'est nécessaire.
-- **Réutiliser des tableaux de bord** : l'onglet *Publication* exporte et importe les réglages en JSON. Ils ne contiennent aucune donnée.
+- **Réutiliser des tableaux de bord** : le sous-onglet *Export et import* de *Réglages* exporte et importe les réglages en JSON. Ils ne contiennent aucune donnée.
 - **Modifier le code** :
 
 | Fichier | Rôle |
