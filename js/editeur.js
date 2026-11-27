@@ -523,7 +523,7 @@
       if (pg) { pg.addEventListener("input", function () {
         var r = $("#lien-reserve"), v = pg.value.trim();
         if (!v) { r.value = ""; return; }
-        try { var u = new URL(v); u.search = ""; u.searchParams.set("embed", "true"); r.value = u.href; } catch (e) { r.value = "Adresse non reconnue : collez l'adresse complète de la page Grist."; }
+        try { var u = new URL(v); var sg = u.pathname.split("/"), ip = sg.lastIndexOf("p"); if (ip > 1 && /^[A-Za-z0-9]{20,}$/.test(sg[ip - 1])) { r.value = "Cette adresse contient l'identifiant long du document : Grist ignorerait la page. Ouvrez la page dans Grist et copiez l'adresse affichée dans la barre du navigateur (elle contient le nom du document)."; return; } u.search = ""; u.searchParams.set("embed", "true"); r.value = u.href; } catch (e) { r.value = "Adresse non reconnue : collez l'adresse complète de la page Grist."; }
       }); }
     }
     if (E.vue === "filtres") {
