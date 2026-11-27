@@ -2,6 +2,9 @@
 
 Les adresses `/v1/` ne changent pas : chaque version ajoute ou corrige, sans retirer ce qui existe.
 
+## 2026-11-27 (accès au document)
+- Fichier commun `commun/barre.js` mis à jour (contrôle d'accès des autres widgets) ; cet éditeur garde son propre message en cas de lecture impossible.
+
 ## 2026-11-27 (export et import dans Réglages)
 - L'export et l'import des réglages en JSON quittent l'onglet Publication : ils forment le sous-onglet « Export et import » de Réglages. Le contenu et le fonctionnement ne changent pas.
 

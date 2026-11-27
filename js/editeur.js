@@ -21,6 +21,8 @@
   };
 
   // Barre commune de l'éditeur (commun/barre.js) : Réglages, En-tête et pied, Aperçu, Publication.
+  // Cet éditeur affiche son propre message quand la lecture du document échoue.
+  window.LAB_ACCES_GERE = true;
   var BL = window.BarreLab, PAGE_USAGE = false;
   // Arrivée depuis la page de lecture (bouton « Configurer ») : un bouton y ramène.
   var RETOUR = (function () {
