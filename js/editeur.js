@@ -51,7 +51,7 @@
     p.insertAdjacentHTML("afterbegin", BL.modeHtml("ed", PAGE_USAGE ? "page" : "editeur"));
     BL.brancherMode(p, "ed", function (m, ok) {
       if (!ok) { message("warning", "Affichage appliqué pour cette fois seulement : Grist n'a pas enregistré le choix (droits insuffisants sur le document ?)."); }
-      if (m === "page") { modeUsage(true); E.vue = "apercu"; afficher(); } else { message("success", "Cette vue Grist affiche l'éditeur du widget."); }
+      if (m === "page") { modeUsage(true); E.vue = "apercu"; afficher(); } else { message("success", "Cette vue Grist affiche l'éditeur du widget. Pour garder ce choix, cliquez sur Enregistrer en haut à droite de la vue Grist."); }
     });
   }
   var LIB_OPS_DATE = { sup: "est après le", supEgal: "est le ou après le", inf: "est avant le", infEgal: "est le ou avant le" };
